@@ -1,0 +1,277 @@
+---
+title: "LClinton Doing Data Science Homework 3"
+author: "Laurence Clinton"
+date: "January 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+### QUESTION 1
+
+
+##### Laurence@Faith MINGW64 /d/SMU/DataScience_Course
+##### $ mkdir gitwkspace
+
+##### Laurence@Faith MINGW64 /d/SMU/DataScience_Course
+##### $ cd gitwkspace/
+
+##### Laurence@Faith MINGW64 
+##### /d/SMU/DataScience_Course/gitwkspace
+##### $ pwd
+##### /d/SMU/DataScience_Course/gitwkspace
+
+##### Laurence@Faith MINGW64 ## /d/SMU/DataScience_Course/gitwkspace
+##### $ git init
+##### Initialized empty Git repository in 
+##### D:/SMU/DataScience_Course/gitwkspace/.git/
+
+##### Laurence@Faith MINGW64 
+##### /d/SMU/DataScience_Course/gitwkspace (master)
+##### $ git clone https://github.com/awesomedata/awesome-public-datasets.git
+
+---
+Cloning into 'awesome-public-datasets'...
+remote: Enumerating objects: 76, done.
+remote: Counting objects: 100% (76/76), done.
+remote: Compressing objects: 100% (37/37), done.
+remote: Total 1692 (delta 49), reused 66 (delta 39), pack-reused 1616
+Receiving objects: 100% (1692/1692), 627.23 KiB | 1.69 MiB/s, done.
+Resolving deltas: 100% (1003/1003), done.
+---
+
+### QUESTION 2A
+
+#### setwd("D:/SMU/DataScience_Course/gitwkspace/awesome-public-datasets/Datasets")
+
+#### df <- read.csv("D:/SMU/DataScience_Course/gitwkspace/awesome-public-datasets/Datasets/titanic.csv")
+
+### QUESTION 2B
+
+```{r working with datasets, echo=FALSE}
+setwd("D:/SMU/DataScience_Course/gitwkspace/awesome-public-datasets/Datasets")
+
+df <- read.csv("D:/SMU/DataScience_Course/gitwkspace/awesome-public-datasets/Datasets/titanic.csv")
+
+msum <- sum(df$Sex=="male")
+
+## 577
+
+fsum <-sum(df$Sex=="female")
+
+## 314
+tsumm <- msum + fsum
+
+fplot <- plot(x=fsum, y=tsumm, main="Frequency of Females",xlab="Females",ylab="Total Count")
+
+```
+
+```{r more datasets, echo=FALSE}
+msum <- sum(df$Sex=="male")
+
+## 577
+
+fsum <-sum(df$Sex=="female")
+
+## 314
+tsumm <- msum + fsum
+mplot <- plot(x=msum, y=tsumm, main="Frequency of Males",xlab="Males",ylab="Total Count")
+
+```
+
+### QUESTION 2C (Working with apply)
+
+##### tapply(df$Fare,df$Survived,mean)
+#####       0        1 
+##### 22.11789 48.39541 
+
+##### tapply(df$Survived,df$Sex,mean)
+#####   female      male 
+##### 0.7420382 0.1889081 
+
+##### AgeWO_NA <- na.omit(df$Age)
+
+##### mean(AgeWO_NA)
+##### [1] 29.69912
+ 
+
+### QUESTION 3: Function building
+
+#### data <- read.csv("D:/SMU/DataScience_Course/gitwkspace/sleep/sleep_data_01.csv")
+
+#### sleep_function <- function(data){
+  
+####    MedianAge <- median(data$Age,na.rm = TRUE)
+
+####    MinDurSleep <- min(data$Duration, na.rm = TRUE)
+
+####    MaxDurSleep <- max(data$Duration,na.rm = TRUE)
+
+####    MeanRSES <- mean(data$RSES, na.rm = TRUE)
+
+####    SdRSES <- sd(data$RSES, na.rm = TRUE)
+
+####    MinDurSleep <- min(data$Duration, na.rm = TRUE)
+
+####    MaxDurSleep <- max(data$Duration,na.rm = TRUE)
+
+####    RangeDuration <- MaxDurSleep-MinDurSleep
+  
+####  report <- data.frame((MedianAge/5),(MeanRSES/5),(SdRSES/5),(RangeDuration))	
+
+####  library(plyr)
+
+####  report <- rename(report, c("X.MedianAge.5."="MedianAge","X.MeanRSES.5."="SelfEsteem","X.SdRSES.5."="SE_SD","X.RangeDuration."="DurationRange"))
+
+####  #round report to 2 digits
+
+####  report <- round(report, digits = 2)
+
+####  return (report)
+  
+#### }
+
+#### sleep_function(data)
+
+```{r sleep, echo=FALSE}
+#setwd("D:/SMU/DataScience_Course/gitwkspace")
+data <- read.csv("D:/SMU/DataScience_Course/gitwkspace/sleep/sleep_data_01.csv")
+
+sleep_function <- function(data){
+  
+  MedianAge <- median(data$Age,na.rm = TRUE)
+  MinDurSleep <- min(data$Duration, na.rm = TRUE)
+  MaxDurSleep <- max(data$Duration,na.rm = TRUE)
+  MeanRSES <- mean(data$RSES, na.rm = TRUE)
+  SdRSES <- sd(data$RSES, na.rm = TRUE)
+  MinDurSleep <- min(data$Duration, na.rm = TRUE)
+  MaxDurSleep <- max(data$Duration,na.rm = TRUE)
+  RangeDuration <- MaxDurSleep-MinDurSleep
+  
+  report <- data.frame((MedianAge/5),(MeanRSES/5),(SdRSES/5),(RangeDuration))	
+  library(plyr)
+  report <- rename(report, c("X.MedianAge.5."="MedianAge", "X.MeanRSES.5."="SelfEsteem","X.SdRSES.5."="SE_SD","X.RangeDuration."="DurationRange"))
+  #round report to 2 digits
+  report <- round(report, digits = 2)
+  return (report)
+  
+}
+
+sleep_function(data)
+```
+
+### QUESTION 4
+
+
+##### install.packages("remotes")
+##### remotes::install_github("rudeboybert/fivethirtyeight", build_vignettes = TRUE)
+
+##### library(fivethirtyeight)
+##### data(package = "fivethirtyeight")
+
+##### df <-data.frame(college_recent_grads)
+
+##### vignette("fivethirtyeight", package = "fivethirtyeight")
+ 
+#### URL info
+
+##### https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/ 
+
+##### dim(df)
+##### [1] 173  21
+
+##### colnames(df)
+##### [1] "rank"                        "major_code"                 
+##### [3] "major"                       "major_category"             
+##### [5] "total"                       "sample_size"                
+##### [7] "men"                         "women"                      
+##### [9] "sharewomen"                  "employed"                   
+##### [11] "employed_fulltime"           "employed_parttime"          
+##### [13] "employed_fulltime_yearround" "unemployed"                 
+##### [15] "unemployment_rate"           "p25th"                      
+##### [17] "median"                      "p75th"                      
+##### [19] "college_jobs"                "non_college_jobs"           
+##### [21] "low_wage_jobs"              
+
+##### URL: https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/
+
+### QUESTION 5a and 5b
+
+##### colnames(df)
+##### [1] "rank"                        "major_code"                 
+##### 1 [3] "major"                       "major_category"             
+##### [5] "total"                       "sample_size"                
+##### [7] "men"                         "women"                      
+##### [9] "sharewomen"                  "employed"                   
+##### [11] "employed_fulltime"           "employed_parttime"          
+##### [13] "employed_fulltime_yearround" "unemployed"                 
+##### [15] "unemployment_rate"           "p25th"                      
+##### [17] "median"                      "p75th"                      
+##### [19] "college_jobs"                "non_college_jobs"           
+##### [21] "low_wage_jobs"   
+
+##### ncol(df)
+##### [1] 21
+
+
+### QUESTION 5b 
+
+
+
+##### major_count <- count(df$major_category)
+
+##### major_count
+                                     x freq
+##### 1      Agriculture & Natural Resources   10
+##### 2                                 Arts    8
+##### 3               Biology & Life Science   14
+##### 4                             Business   13
+##### 5          Communications & Journalism    4
+##### 6              Computers & Mathematics   11
+##### 7                            Education   16
+##### 8                          Engineering   29
+##### 9                               Health   12
+##### 10           Humanities & Liberal Arts   15
+##### 11 Industrial Arts & Consumer Services    7
+##### 12                   Interdisciplinary    1
+##### 13                 Law & Public Policy    5
+##### 14                   Physical Sciences   10
+##### 15            Psychology & Social Work    9
+##### 16                      Social Science    9
+
+
+
+### QUESTION 5c
+
+
+```{r fivethirtyeight, echo=FALSE}
+
+remotes::install_github("rudeboybert/fivethirtyeight", build_vignettes = TRUE)
+
+library(fivethirtyeight)
+data(package = "fivethirtyeight")
+
+df <-data.frame(college_recent_grads)
+
+major_count <- count(df$major_category)
+
+barplot(major_count$freq,names=major_count$x,main="Recent College Graduates By Major",xlab="Count",ylab="College Major",horiz=TRUE,col=c("Red"),las=1)
+
+```
+
+### QUESTION 5D
+
+##### write.csv(df,file="fivethirtyeight.csv",row.names = FALSE)
+
+
+### QUESTION 6
+
+
+##### https://github.com/lpclinton/DDScienceHmk.git
+
+
+
